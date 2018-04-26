@@ -25,8 +25,15 @@ class ViewController: UIViewController{
 
     @IBAction func notePressed(_ sender: UIButton) {
         
-        let noteNum: Int = sender.tag
+        let buttonPressed: Int = sender.tag
         
+        playSound(noteNum: buttonPressed)
+        
+        
+        
+    }
+    
+    func playSound (noteNum: Int) {
         guard let url = Bundle.main.url(forResource: "note\(noteNum)", withExtension: "wav") else { return }
         
         do {
@@ -35,7 +42,7 @@ class ViewController: UIViewController{
             
             // For iOS 11
             objPlayer = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.wav.rawValue)
-
+            
             
             guard let aPlayer = objPlayer else { return }
             aPlayer.play()
@@ -43,12 +50,9 @@ class ViewController: UIViewController{
         } catch let error {
             print(error.localizedDescription)
         }
-
-       print(sender.tag)
         
+        print(noteNum)
     }
-    
-  
 
 }
 
