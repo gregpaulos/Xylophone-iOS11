@@ -7,19 +7,44 @@
 //
 
 import UIKit
+import AVFoundation
+
 
 class ViewController: UIViewController{
     
 
+    var objPlayer: AVAudioPlayer?
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
+        
 
+    }
 
 
     @IBAction func notePressed(_ sender: UIButton) {
         
+        let noteNum: Int = sender.tag
         
+        guard let url = Bundle.main.url(forResource: "note\(noteNum)", withExtension: "wav") else { return }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            // For iOS 11
+            objPlayer = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.wav.rawValue)
+
+            
+            guard let aPlayer = objPlayer else { return }
+            aPlayer.play()
+            
+        } catch let error {
+            print(error.localizedDescription)
+        }
+
+       print(sender.tag)
         
     }
     
